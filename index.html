@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satyaki Das | Cybersecurity & Digital Forensics</title>
+    <!-- Font Awesome for Cyber Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Google Font: Inter & Mono for the Cyber Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables - Enhanced Neon/Cyber Palette with HUE Cycling */
+        :root {
+            /* Initial Hue setting for the animation */
+            --hue: 180; 
+            
+            /* BASE COLORS derived from the cycling hue */
+            --color-primary: hsl(var(--hue), 100%, 50%); /* Bright, full saturation, CYCLING (Headings, Text, Primary Button BG) */
+            --color-secondary: #A38CFF; /* Purple/Blue - Static contrast color */
+            --color-background: #050910; /* Deep Abyss Black */
+            --color-card-bg: rgba(14, 15, 26, 0.4); /* Transparent Dark */
+            --color-glass-border: hsla(var(--hue), 100%, 50%, 0.2); /* Neon Border - CYCLING (Card Borders) */
+            --color-glow-base: hsla(var(--hue), 100%, 50%, 0.4); /* Neon Glow Base - CYCLING (Shadows/Glows) */
+            --color-text: #E0E0E0;
+            
+            /* Fonts */
+            --font-main: 'Inter', sans-serif;
+            --font-code: 'Space Mono', monospace;
+            --blur-strength: 16px;
+            
+            /* Shadows using the cycling color for glow */
+            --shadow-elevation-1: 0 2px 5px rgba(0,0,0,0.5), 0 0 10px hsla(var(--hue), 100%, 50%, 0.1); /* CYCLING */
+            --shadow-elevation-2: 0 8px 20px rgba(0,0,0,0.8), 0 0 25px hsla(var(--hue), 100%, 50%, 0.3); /* CYCLING */
+        }
+        
+        /* Color Cycling Animation: Rotates the base hue from 0 to 360 degrees */
+        @keyframes color-cycle {
+            0% { --hue: 0; }
+            100% { --hue: 360; }
+        }
+
+        /* Base & Global Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--color-text);
+            background-color: var(--color-background);
+            line-height: 1.6;
+            padding-top: 80px;
+            position: relative;
+            overflow-x: hidden;
+            
+            /* APPLY COLOR CYCLE TO THE BODY */
+            animation: color-cycle 20s linear infinite; 
+        }
+        
+        /* Canvas Background Layer */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* Glassmorphism Base Card Style */
+        .glass-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-glass-border); /* CYCLING BORDER */
+            backdrop-filter: blur(var(--blur-strength));
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-elevation-1); /* CYCLING SHADOW */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, opacity 0.6s ease, filter 0.6s ease, box-shadow 0.2s;
+        }
+
+        .glass-card:hover, .btn:hover {
+            box-shadow: var(--shadow-elevation-2); /* CYCLING HOVER SHADOW */
+            transform: translateY(-6px);
+            border-color: var(--color-primary); /* CYCLING BORDER ON HOVER */
+        }
+        
+        /* Section Reveal Animation */
+        .section {
+            padding: 4rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            filter: blur(8px);
+            transform: translateY(30px);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out, filter 1.2s ease-out;
+        }
+        .section.visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
+        }
+
+        h2 {
+            font-family: var(--font-code);
+            color: var(--color-primary); /* CYCLING COLOR (Headings) */
+            text-transform: uppercase;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            margin-bottom: 2.5rem;
+            text-align: center;
+            text-shadow: 0 0 10px var(--color-glow-base); /* CYCLING GLOW */
+        }
+
+        /* --- Header/Navigation --- */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 0.8rem 2rem;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .header.scrolled {
+            background: var(--color-card-bg);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 15px var(--color-glow-base), 0 0 20px var(--color-glow-base); /* CYCLING SHADOW */
+            border-bottom: 1px solid var(--color-glass-border); /* CYCLING BORDER */
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: var(--font-code);
+            color: var(--color-primary); /* CYCLING COLOR (Title/Logo) */
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-shadow: 0 0 5px var(--color-primary); /* CYCLING GLOW */
+        }
+
+        .nav-links a {
+            color: var(--color-text);
+            text-decoration: none;
+            margin-left: 2rem;
+            padding: 0.5rem 0.5rem;
+            transition: color 0.3s ease, transform 0.2s ease;
+            position: relative;
+            border-radius: 8px;
+            font-family: var(--font-code);
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary); /* CYCLING COLOR */
+            text-shadow: 0 0 5px var(--color-primary); /* CYCLING GLOW */
+        }
+        
+        /* --- Hero Section --- */
+        #hero {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .terminal-output {
+            font-family: var(--font-code);
+            font-size: clamp(1.8rem, 6vw, 4rem);
+            color: var(--color-primary); /* CYCLING COLOR */
+            margin-bottom: 1rem;
+            white-space: pre-wrap; 
+            word-break: break-word; 
+            overflow: hidden;
+            border-right: 4px solid var(--color-primary); /* CYCLING COLOR (Terminal Cursor) */
+            animation: blink 0.75s step-end infinite;
+            text-shadow: 0 0 15px var(--color-primary); /* CYCLING GLOW */
+        }
+        
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: var(--color-primary); } 
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap; 
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: var(--font-main);
+            box-shadow: var(--shadow-elevation-1);
+            margin: 0.75rem 0.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--color-primary); /* CYCLING COLOR (Primary Button Background) */
+            color: var(--color-background);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-primary); /* CYCLING COLOR (Secondary Button Text) */
+            border: 2px solid var(--color-primary); /* CYCLING BORDER (Secondary Button Border) */
+            box-shadow: 0 0 15px var(--color-glow-base); /* CYCLING GLOW */
+        }
+        
+        .btn-primary:hover, .btn-secondary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 25px var(--color-glow-base), 0 6px 15px rgba(0, 0, 0, 0.8); /* CYCLING GLOW */
+        }
+
+        /* --- About Section --- */
+        .profile-img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            border: 5px solid var(--color-primary); /* CYCLING BORDER */
+            box-shadow: 0 0 20px var(--color-glow-base); /* CYCLING GLOW */
+            transition: transform 0.5s;
+        }
+
+        /* --- Skills, Certifications, Projects Grid (UPDATED FOR 2x2) --- */
+        .skill-group h3, .project-card h4, .certification-card h4, .education-card h4 {
+            color: var(--color-primary); /* CYCLING COLOR (Card Subheadings) */
+            margin-bottom: 1rem;
+            font-size: 1.35rem;
+            font-family: var(--font-code);
+            border-bottom: 1px solid var(--color-glass-border); /* CYCLING BORDER */
+            padding-bottom: 0.5rem;
+            text-shadow: none;
+        }
+
+        .skill-group li:hover {
+            color: var(--color-primary); /* CYCLING COLOR */
+            margin-left: 5px;
+        }
+        
+        /* --- Experience Timeline --- */
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: var(--color-primary); /* CYCLING COLOR (Timeline Line) */
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1.5px;
+            box-shadow: 0 0 10px var(--color-primary); /* CYCLING GLOW */
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            right: -8px;
+            background-color: var(--color-background);
+            border: 3px solid var(--color-primary); /* CYCLING BORDER (Timeline Dots) */
+            top: 25px;
+            border-radius: 50%;
+            z-index: 1;
+            box-shadow: 0 0 10px var(--color-primary); /* CYCLING GLOW */
+        }
+        
+        /* --- TryHackMe Badges --- */
+        .badge-card {
+            background: hsla(var(--hue), 100%, 50%, 0.05); /* CYCLING BACKGROUND HUE */
+            border: 1px solid hsla(var(--hue), 100%, 50%, 0.3); /* CYCLING BORDER HUE */
+        }
+        .badge-card:hover {
+            box-shadow: 0 8px 30px hsla(var(--hue), 100%, 50%, 0.4); /* CYCLING GLOW */
+            background: hsla(var(--hue), 100%, 50%, 0.1); /* CYCLING BACKGROUND HUE */
+            border-color: var(--color-primary); /* CYCLING BORDER HUE */
+        }
+
+        .badge-label {
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            color: var(--color-primary); /* CYCLING COLOR */
+        }
+        
+        /* --- Contact Form --- */
+        .contact-form input:focus, .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--color-primary); /* CYCLING BORDER */
+            box-shadow: 0 0 15px var(--color-glow-base); /* CYCLING GLOW */
+        }
+        
+        /* ** MOBILE OPTIMIZATION: Social Icons ** */
+        .social-icons a {
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            margin: 0 0.8rem;
+            color: var(--color-secondary);
+            transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--color-primary); /* CYCLING COLOR */
+            transform: scale(1.2) translateY(-4px);
+            text-shadow: 0 0 10px var(--color-primary); /* CYCLING GLOW */
+        }
+        
+        /* --- Floating TryHackMe Badge --- */
+        .tryhackme-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 90;
+            padding: 8px;
+            background: var(--color-background);
+            border-radius: 12px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.4), 0 0 20px var(--color-glow-base); /* CYCLING GLOW */
+            border: 2px solid var(--color-glow-base); /* CYCLING BORDER */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .tryhackme-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 30px var(--color-primary); /* CYCLING GLOW */
+        }
+        .tryhackme-float img {
+            width: 150px;
+            height: auto;
+            display: block;
+        }
+
+        /* 1. Responsive Grid Layout (For Skills & Certs) */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        @media (min-width: 1024px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr); 
+            }
+        }
+        
+        .project-solo-wrapper {
+            display: flex;
+            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .project-solo-wrapper > .project-card {
+            width: 100%;
+        }
+        
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 1.5rem;
+            justify-items: center;
+        }
+        
+        @media (min-width: 768px) {
+            .badges-grid {
+                grid-template-columns: repeat(3, 1fr); 
+            }
+        }
+        
+        .timeline-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+        
+        .timeline-item.left {
+            left: 0;
+            text-align: right;
+        }
+        
+        .timeline-item.right {
+            left: 50%;
+        }
+
+        .timeline-item.left::after {
+            right: -8px;
+        }
+
+        .timeline-item.right::after {
+            left: -8px;
+        }
+
+        .timeline-item-content {
+            padding: 20px;
+            border-radius: 6px;
+            text-align: left;
+            opacity: 0;
+            filter: blur(4px);
+            transform: scale(0.9);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out, filter 0.8s ease-out;
+        }
+
+        .timeline-item.visible .timeline-item-content {
+            opacity: 1;
+            filter: blur(0);
+            transform: scale(1);
+        }
+
+        .chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            justify-content: center;
+            max-width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .chip {
+            background-color: var(--color-secondary);
+            color: var(--color-background);
+            padding: 0.3rem 0.8rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: var(--font-code);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+        }
+        .contact-form label, .contact-form input, .contact-form textarea {
+            display: block;
+            width: 100%;
+            margin-bottom: 1rem;
+            color: var(--color-text);
+            font-family: var(--font-main);
+        }
+        .contact-form input, .contact-form textarea {
+            background-color: rgba(14, 15, 26, 0.6);
+            border: 1px solid var(--color-glass-border);
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .badge-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .badge-card img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 0.75rem;
+        }
+        
+        .certification-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- Responsiveness (Mobile Adjustments) --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; 
+            }
+            .header {
+                padding: 0.8rem 1rem; 
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            .timeline-item.right {
+                left: 0%;
+            }
+            .timeline-container::after { 
+                left: 32px; 
+            }
+            .timeline-item.left::after, .timeline-item.right::after {
+                left: 24px;
+                right: auto;
+            }
+            .timeline-item.left .timeline-item-content {
+                text-align: left;
+            }
+            .timeline-item-content {
+                padding: 15px; 
+            }
+            
+            .badges-grid {
+                grid-template-columns: repeat(2, 1fr); 
+            }
+
+            .tryhackme-float {
+                bottom: 10px;
+                right: 10px;
+            }
+            .tryhackme-float img {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animated Canvas Background -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Floating TryHackMe Profile Badge -->
+    <a href="https://tryhackme.com/p/547y4k1" target="_blank" rel="noopener noreferrer" class="tryhackme-float">
+      <img src="https://tryhackme-badges.s3.amazonaws.com/547y4k1.png" alt="TryHackMe Profile Badge">
+    </a>
+
+    <!-- Header / Floating Navigation -->
+    <header class="header" id="nav-header">
+        <div class="nav-container">
+            <a href="#hero" class="logo">Satyaki Das_</a>
+            <nav class="nav-links">
+                <a href="#hero" data-target="hero">Home</a>
+                <a href="#about" data-target="about">About</a>
+                <a href="#education" data-target="education">Education</a>
+                <a href="#skills" data-target="skills">Skills</a>
+                <a href="#experience" data-target="experience">Experience</a>
+                <a href="#projects" data-target="projects">Projects</a>
+                <a href="#certifications" data-target="certifications">Certifications</a>
+                <a href="#contact" data-target="contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- 1. Hero Section -->
+        <section id="hero" class="section visible">
+            <div class="hero-content">
+                <div class="terminal-output" id="typewriter"></div>
+                <p class="tagline">Certified Ethical Hacker V13 Ai (CEH V 13 Ai) |Cybersecurity Analyst | Digital Forensic Investigator | LLM Security Specialist</p>
+                <div class="hero-buttons">
+                    <a href="https://drive.google.com/file/d/1YjUsMNc0EVwdUZVDczgPW9TMRICZLcj2/view" 
+                       target="_blank" 
+                       class="btn btn-primary">
+                        <i class="fas fa-file-download"></i> Request CV
+                    </a>
+                    <a href="#projects" class="btn btn-secondary">
+                        <i class="fas fa-rocket"></i> Explore Projects
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. About Section -->
+        <section id="about" class="section">
+            <h2>About <i class="fas fa-user-secret"></i></h2>
+            <div class="about-container">
+                <div class="profile-card glass-card">
+                    <img src="https://ugc.production.linktr.ee/57f4ed75-e31b-494f-9921-ad76a19d5299_final-professional-dp.png?io=true&size=avatar-v3_0" 
+                         alt="Satyaki Das Profile Picture" 
+                         class="profile-img"
+                         onerror="this.onerror=null;this.src='https://placehold.co/160x160/050910/00FFC0?text=SD'">
+
+                    <p>
+                        Cyber Security professional with B.Sc. in Digital Forensics and expertise in VAPT, penetration testing, and incident response.
+                        Proficient in forensic tools (FTK Imager, X-Ways, Autopsy) with proven ability to identify critical vulnerabilities and
+                        implement compliance audits (ISO 27001, NIST CSF, OWASP). Strong foundation in AI/ML security, threat intelligence, and
+                        digital evidence examination with quantifiable results across forensic investigations and security assessments.
+                    </p>
+                    <div class="chips-container">
+                        <span class="chip">FTK Imager</span>
+                        <span class="chip">Autopsy</span>
+                        <span class="chip">X-Ways</span>
+                        <span class="chip">Burp Suite</span>
+                        <span class="chip">Nessus</span>
+                        <span class="chip">Kali Linux</span>
+                        <span class="chip">Volatility</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Education Section (NEW) -->
+        <section id="education" class="section">
+            <h2>Education <i class="fas fa-university"></i></h2>
+            <div class="grid-container">
+                <div class="education-card glass-card">
+                    <h4>Bachelor of Science in Digital Forensics</h4>
+                    <p>Maulana Abul Kalam Azad University of Technology, West Bengal</p>
+                    <small>2022 - 2025 | SGPA: 8.38</small>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem;">Core: Computer Forensics, Cyber Security, Cryptography, Network Security, Malware Analysis.</p>
+                </div>
+                <div class="education-card glass-card">
+                    <h4>Diploma in Computer Science & Engineering</h4>
+                    <p>Brainware University</p>
+                    <small>2019 - 2021 | CGPA: 8.5</small>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem;">Foundation: Data Structures, DBMS, Operating Systems, Networks.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 4. Skills Section -->
+        <section id="skills" class="section">
+            <h2>Skills <i class="fas fa-brain"></i></h2>
+            <div class="grid-container">
+                <!-- Group 1: Digital Forensics & VAPT -->
+                <div class="skill-group glass-card">
+                    <h3>Digital Forensics & VAPT</h3>
+                    <ul>
+                        <li><i class="fas fa-microscope"></i> Digital Forensics & Incident Response (DFIR)</li>
+                        <li><i class="fas fa-mobile-alt"></i> Mobile Forensics & Data Recovery</li>
+                        <li><i class="fas fa-bug"></i> VAPT, Penetration Testing & Red Teaming</li>
+                        <li><i class="fas fa-network-wired"></i> Network Security & Architecture</li>
+                        <li><i class="fas fa-search-dollar"></i> Malware Analysis & Memory Forensics</li>
+                        <li><i class="fas fa-shield-alt"></i> Threat Hunting & SOC Operations</li>
+                    </ul>
+                </div>
+                <!-- Group 2: AI/LLM Security & Responsible AI -->
+                <div class="skill-group glass-card">
+                    <h3>AI/LLM Security & Responsible AI</h3>
+                    <ul>
+                        <li><i class="fas fa-robot"></i> LLM Security & Adversarial Threat Modeling</li>
+                        <li><i class="fas fa-fingerprint"></i> Prompt Injection Detection & Mitigation</li>
+                        <li><i class="fas fa-hand-holding-heart"></i> AI Ethics, Governance & Responsible AI</li>
+                        <li><i class="fas fa-database"></i> Data Poisoning & Adversarial ML Defense</li>
+                    </ul>
+                </div>
+                <!-- Group 3: Security Compliance, Audit & GRC -->
+                <div class="skill-group glass-card">
+                    <h3>Security Compliance, Audit & GRC</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> ISO/IEC 27001:2022 Implementation (ISMS)</li>
+                        <li><i class="fas fa-tasks"></i> NIST CSF, MITRE ATT&CK Frameworks</li>
+                        <li><i class="fas fa-file-contract"></i> Security Compliance Auditing</li>
+                        <li><i class="fas fa-gavel"></i> Risk Management & Governance (GRC)</li>
+                    </ul>
+                </div>
+                <!-- Group 4: Tools, Programming & Professional Process -->
+                <div class="skill-group glass-card">
+                    <h3>Tools, Programming & Process</h3>
+                    <ul>
+                        <li><i class="fas fa-hdd"></i> Forensic Tools: FTK, X-Ways, Autopsy, Volatility</li>
+                        <li><i class="fas fa-terminal"></i> Security Platforms: Kali, Metasploit, Burp Suite, Nmap</li>
+                        <li><i class="fas fa-code"></i> Python, Bash Scripting, Linux Administration</li>
+                        <li><i class="fas fa-user-tie"></i> vCISO Services & Policy Optimization</li>
+                        <li><i class="fas fa-users"></i> Chain of Custody & Evidence Analysis</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Experience Timeline -->
+        <section id="experience" class="section">
+            <h2>Experience <i class="fas fa-history"></i></h2>
+            <div class="timeline-container">
+                <!-- Item 1: Nightingale -->
+                <div class="timeline-item left">
+                    <div class="timeline-item-content glass-card">
+                        <h4>Digital Forensic Evidence Examiner</h4>
+                        <p>Nightingale Data Solution</p>
+                        <small>Jan 2025 - Mar 2025</small>
+                        <ul style="margin-top: 1rem; padding-left: 1.2rem; list-style-type: disc; font-size: 0.95rem;">
+                            <li>Executed forensic examination on 25+ digital devices utilizing X-Ways, FTK Imager, and Autopsy.</li>
+                            <li>Extracted and analyzed 500+ GB of critical artifacts for defense litigation cases.</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Item 2: ISOAH Forensics HQ -->
+                <div class="timeline-item right">
+                    <div class="timeline-item-content glass-card">
+                        <h4>Digital Forensic Intern</h4>
+                        <p>ISOAH Forensics HQ</p>
+                        <small>Oct 2024 - Nov 2024</small>
+                         <ul style="margin-top: 1rem; padding-left: 1.2rem; list-style-type: disc; font-size: 0.95rem;">
+                            <li>Facilitated forensic analysis on 20+ devices recovering 300+ GB of data from 150+ file systems.</li>
+                            <li>Maintained evidentiary integrity for 75+ evidence items.</li>
+                        </ul>
+                    </div>
+                </div>
+                 <!-- Item 3: ISOAH Audit -->
+                <div class="timeline-item left">
+                    <div class="timeline-item-content glass-card">
+                        <h4>Information Security Compliance Auditor (vCISO Intern)</h4>
+                        <p>ISOAH</p>
+                        <small>Aug 2024 - Sep 2024</small>
+                         <ul style="margin-top: 1rem; padding-left: 1.2rem; list-style-type: disc; font-size: 0.95rem;">
+                            <li>Spearheaded comprehensive security audits on 100+ systems and revised 5 organizational policies.</li>
+                            <li>Achieved 40% improvement in ISO 27001 compliance posture.</li>
+                            <li>Delivered web application penetration testing (WAPT).</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Item 4: Navodita Infosystems (NEW) -->
+                <div class="timeline-item right">
+                    <div class="timeline-item-content glass-card">
+                        <h4>Vulnerability Assessment & Penetration Testing Intern</h4>
+                        <p>Navodita Infosystems (Remote)</p>
+                        <small>Jun 2024 - Jul 2024</small>
+                         <ul style="margin-top: 1rem; padding-left: 1.2rem; list-style-type: disc; font-size: 0.95rem;">
+                            <li>Orchestrated penetration testing on 15+ target systems leveraging Kali Linux and Metasploit.</li>
+                            <li>Discovered 50+ vulnerabilities including 10 critical-severity CVEs.</li>
+                            <li>Implemented patch management strategies yielding 30% security posture enhancement.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Projects Section -->
+        <section id="projects" class="section">
+            <h2>Projects <i class="fas fa-code-branch"></i></h2>
+            <!-- Changed layout to grid-container to accommodate multiple projects -->
+            <div class="grid-container">
+                <!-- Project 1: S.H.O.N.K.U. (New) -->
+                <div class="project-card glass-card">
+                    <h4>S.H.O.N.K.U. - Cybersecurity & Digital Forensics AI Assistant</h4>
+                    <p>AI-powered chatbot specialized in cybersecurity and digital forensics education with multi-model support.</p>
+                    <small>Nov 12, 2025</small>
+                    <ul style="margin-top: 1rem; padding-left: 1.2rem; list-style-type: circle; text-align: left; font-size: 0.95rem;">
+                        <li>Developed multi-model AI assistant (DeepSeek R1T2 Chimera) for guided learning on encryption, threat modeling, and forensic techniques.</li>
+                        <li>Implemented conversation history, session persistence, multi-format export (JSON, Markdown), and voice input.</li>
+                        <li>Built responsive dark-themed UI optimized for technical demonstrations and educational scenarios.</li>
+                    </ul>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://9un15h3r.github.io/SHONKU/" target="_blank" class="btn btn-secondary" style="font-size: 0.9rem; padding: 0.5rem 1.5rem;">
+                            <i class="fas fa-external-link-alt"></i> View Project
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 2: Securing Intelligence -->
+                <div class="project-card glass-card">
+                    <h4>Securing Intelligence: AI/ML Security Vulnerabilities and Mitigation Frameworks</h4>
+                    <p>Final-year B.Sc. project exploring AI/ML vulnerabilities, threats, and defense mechanisms.</p>
+                    <small>Feb 2025 - Oct 2025</small>
+                     <ul style="margin-top: 1rem; padding-left: 1.2rem; list-style-type: circle; text-align: left; font-size: 0.95rem;">
+                        <li>Analyzed threats: data poisoning, model backdoors, adversarial attacks, and LLM prompt injection.</li>
+                        <li>Architected enterprise-grade mitigation framework incorporating adversarial training and model hardening.</li>
+                        <li>Formulated GRC strategies for secure AI deployment aligned with OWASP Top 10 for LLM Applications.</li>
+                    </ul>
+                    <div style="margin-top: 1.5rem;">
+                        <a href="https://drive.google.com/file/d/1eb43bd7isn6_k0Ms6A4h1R5qpXSzep1l/view" target="_blank" class="btn btn-secondary" style="font-size: 0.9rem; padding: 0.5rem 1.5rem;">
+                            <i class="fas fa-external-link-alt"></i> View Project
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Certifications Carousel -->
+        <section id="certifications" class="section">
+            <h2>Certifications <i class="fas fa-graduation-cap"></i></h2>
+            <div class="grid-container">
+                <!-- CEH -->
+                <a href="#" target="_blank" class="certification-link">
+                    <div class="certification-card glass-card">
+                        <div>
+                            <h4>Certified Ethical Hacker V13 Ai (CEH V 13 Ai)</h4>
+                            <p>EC-Council</p>
+                        </div>
+                    </div>
+                </a>
+                <!-- CND (NEW) -->
+                <a href="#" target="_blank" class="certification-link">
+                    <div class="certification-card glass-card">
+                        <div>
+                            <h4>Certified Network Defender (CND)</h4>
+                            <p>EC-Council</p>
+                        </div>
+                    </div>
+                </a>
+                <!-- LLM Security -->
+                <a href="https://www.udemy.com/certificate/UC-65c16108-d31f-4189-9e87-ffa4f82bae16/" target="_blank" class="certification-link">
+                    <div class="certification-card glass-card">
+                        <div>
+                            <h4>Master LLM Security & Responsible AI</h4>
+                            <p>Udemy</p>
+                        </div>
+                    </div>
+                </a>
+                <!-- ISO 27001 -->
+                <a href="https://www.udemy.com/certificate/UC-4aa52e25-02c0-4a41-81f9-e24341d5fd71/" target="_blank" class="certification-link">
+                    <div class="certification-card glass-card">
+                        <div>
+                            <h4>ISO/IEC 27001:2022 ISMS</h4>
+                            <p>Udemy</p>
+                        </div>
+                    </div>
+                </a>
+                 <!-- Mobile Forensic -->
+                <a href="https://drive.google.com/file/d/1mZ_eLHo3W1AVhFdTWzNOZ2s5ETED2Eyx/view?usp=sharing" target="_blank" class="certification-link">
+                    <div class="certification-card glass-card">
+                        <div>
+                            <h4>Mobile Forensics</h4>
+                            <p>FCCIS India</p>
+                        </div>
+                    </div>
+                </a>
+                <!-- SOC Analyst (NEW) -->
+                <a href="#" target="_blank" class="certification-link">
+                    <div class="certification-card glass-card">
+                        <div>
+                            <h4>SOC Analyst Simulation</h4>
+                            <p>Deloitte</p>
+                        </div>
+                    </div>
+                </a>
+                 <!-- Intro to Cybersecurity (NEW) -->
+                <a href="#" target="_blank" class="certification-link">
+                    <div class="certification-card glass-card">
+                        <div>
+                            <h4>Introduction to Cybersecurity</h4>
+                            <p>Cisco</p>
+                        </div>
+                    </div>
+                </a>
+                <!-- CCNA -->
+                <a href="https://drive.google.com/file/d/1lzmeKY064iN-zmkIfpWuCUWxsZQ1cjYu/view?usp=drive_link" target="_blank" class="certification-link">
+                    <div class="certification-card glass-card">
+                        <div>
+                            <h4>CCNA Essentials</h4>
+                            <p>ISOAH</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+        
+        <!-- 8. TryHackMe Badges -->
+        <section id="badges" class="section">
+            <h2>Badges <i class="fas fa-trophy"></i></h2>
+            <div class="badges-grid">
+                <!-- Badge: CEH v13 (New) -->
+                <a href="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/ECC-CEH-Certificate.png" target="_blank" class="badge-card">
+                    <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/CEH_2E345519D3F7.png" alt="CEH v13 Badge">
+                    <div class="badge-label">CEH v13</div>
+                </a>
+                <!-- Badge: Introduction to Cybersecurity -->
+                <a href="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/I2CSUpdate20251030-32-7afnmi.png" target="_blank" class="badge-card">
+                    <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/introduction-to-cybersecurity%20(1).png" alt="Intro to Cybersecurity Badge">
+                    <div class="badge-label">Intro to Cybersecurity</div>
+                </a>
+                <!-- Badge 1: Mr. Robot -->
+                <a href="https://tryhackme.com/547y4k1/badges/mr-robot?utm_campaign=social_share&utm_medium=social&utm_content=badge&utm_source=copy" target="_blank" class="badge-card">
+                    <img src="https://tryhackme.com/img/badges/mrrobot.svg" alt="Mr. Robot Badge">
+                    <div class="badge-label">Mr. Robot</div>
+                </a>
+                <!-- Badge 2: Blues -->
+                <a href="https://tryhackme.com/547y4k1/badges/blue?utm_campaign=social_share&utm_medium=social&utm_content=badge&utm_source=copy" target="_blank" class="badge-card">
+                    <img src="https://tryhackme.com/img/badges/blue.svg" alt="Blue Badge">
+                    <div class="badge-label">Blues</div>
+                </a>
+                <!-- Badge 3: Hash Cracker -->
+                <a href="https://tryhackme.com/547y4k1/badges/hash-cracker?utm_campaign=social_share&utm_medium=social&utm_content=badge&utm_source=copy" target="_blank" class="badge-card">
+                    <img src="https://tryhackme.com/img/badges/hashcracker.svg" alt="Hash Cracker Badge">
+                    <div class="badge-label">Hash Cracker</div>
+                </a>
+                <!-- Badge 4: OhSINT -->
+                <a href="https://tryhackme.com/547y4k1/badges/ohsint?utm_campaign=social_share&utm_medium=social&utm_content=badge&utm_source=copy" target="_blank" class="badge-card">
+                    <img src="https://tryhackme.com/img/badges/ohsint.svg" alt="OhSINT Badge">
+                    <div class="badge-label">OhSINT</div>
+                </a>
+                <!-- Badge 5: Ice -->
+                <a href="https://tryhackme.com/547y4k1/badges/ice?utm_campaign=social_share&utm_medium=social&utm_content=badge&utm_source=copy" target="_blank" class="badge-card">
+                    <img src="https://tryhackme.com/img/badges/ice.svg" alt="Ice Badge">
+                    <div class="badge-label">Ice</div>
+                </a>
+                <!-- Badge 6: Linux PrivEsc -->
+                <a href="https://tryhackme.com/547y4k1/badges/linux-privesc?utm_campaign=social_share&utm_medium=social&utm_content=badge&utm_source=copy" target="_blank" class="badge-card">
+                    <img src="https://tryhackme.com/img/badges/linuxprivesc.svg" alt="Linux PrivEsc Badge">
+                    <div class="badge-label">Linux PrivEsc</div>
+                </a>
+                <!-- Badge 7: OWASP Top 10 -->
+                <a href="https://tryhackme.com/547y4k1/badges/owasp-10?utm_campaign=social_share&utm_medium=social&utm_content=badge&utm_source=copy" target="_blank" class="badge-card">
+                    <img src="https://tryhackme.com/img/badges/owasptop10.svg" alt="OWASP Top 10 Badge">
+                    <div class="badge-label">OWASP Top 10</div>
+                </a>
+                <!-- Badge 8: cat linux.txt (Terminaled Badge) -->
+                <a href="https://tryhackme.com/547y4k1/badges/terminaled?utm_campaign=social_share&utm_medium=social&utm_content=badge&utm_source=copy" target="_blank" class="badge-card">
+                    <img src="https://tryhackme.com/img/badges/linux.svg" alt="TryHackMe Terminaled (cat linux.txt) Badge">
+                    <div class="badge-label">cat linux.txt</div>
+                </a>
+                <!-- Badge 9: Webbed (Web Fundamentals) -->
+                <a href="https://tryhackme.com/547y4k1/badges/web-fund?utm_campaign=social_share&utm_medium=social&utm_content=badge&utm_source=copy" target="_blank" class="badge-card">
+                    <img src="https://tryhackme.com/img/badges/webbed.svg" alt="Web Fundamentals Badge">
+                    <div class="badge-label">Webbed</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 9. Languages Section -->
+        <section id="languages" class="section">
+            <h2>Languages <i class="fas fa-globe"></i></h2>
+            <div class="chips-container glass-card contact-container">
+                <span class="chip">English</span>
+                <span class="chip">Hindi</span>
+                <span class="chip">Bengali</span>
+            </div>
+        </section>
+
+        <!-- 10. Contact Section -->
+        <section id="contact" class="section">
+            <h2>Get In Touch <i class="fas fa-envelope-open-text"></i></h2>
+            <div class="contact-container glass-card" style="max-width: 600px; margin: 0 auto;">
+                <form class="contact-form" id="contactForm" action="mailto:satyaki.sd.das@gmail.com" method="post" enctype="text/plain">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your name">
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email">
+
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="5" required placeholder="Let's discuss cybersecurity, forensics, or AI..."></textarea>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+
+                <div class="social-icons" style="text-align: center; margin-top: 2.5rem;">
+                    <a href="https://linktr.ee/Satyaki Das Cyber Forensic" target="_blank" title="Linktree"><i class="fas fa-link"></i></a>
+                    <a href="https://www.linkedin.com/in/satyaki-cyberforensics/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://x.com/SatyakiDasDFIR" target="_blank" title="X/Twitter"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://www.facebook.com/SatyakiDasDFIR/" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://tryhackme.com/p/547y4k1" target="_blank" title="TryHackMe"><i class="fas fa-flag"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer style="text-align: center; padding: 2rem; border-top: 1px solid var(--color-glass-border); color: var(--color-secondary);">
+        <p>&copy; 2026 Satyaki Das.</p>
+    </footer>
+
+    <script>
+        // --- Setup Variables ---
+        const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        // 1. Animated Canvas Background
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 150 };
+        
+        let canvasHue = 180; 
+        const hueIncrement = 360 / (20 * 60);
+
+        function setupCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            if (!isReducedMotion) {
+                particles = [];
+                const numberOfParticles = (canvas.width * canvas.height) / 9000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    const size = Math.random() * 5 + 1;
+                    const x = Math.random() * (canvas.width - size * 2) + size;
+                    const y = Math.random() * (canvas.height - size * 2) + size;
+                    const directionX = Math.random() * 1.0 - 0.5;
+                    const directionY = Math.random() * 1.0 - 0.5;
+                    particles.push(new Particle(x, y, directionX, directionY, size));
+                }
+            }
+        }
+
+        window.addEventListener('resize', setupCanvas);
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+            }
+
+            draw() {
+                const particleColor = `hsl(${canvasHue}, 100%, 50%)`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = particleColor;
+                ctx.shadowColor = particleColor;
+                ctx.shadowBlur = 5;
+                ctx.fill();
+            }
+
+            update() {
+                if (this.x > canvas.width || this.x < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.directionY = -this.directionY;
+                }
+
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const distance = Math.sqrt(dx*dx + dy*dy);
+                
+                if (distance < mouse.radius + this.size) {
+                    const angle = Math.atan2(dy, dx);
+                    const force = (mouse.radius - distance) / mouse.radius;
+                    this.x -= force * Math.cos(angle);
+                    this.y -= force * Math.sin(angle);
+                }
+
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        function connect() {
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    const distance = ((particles[a].x - particles[b].x) * (particles[a].x - particles[b].x) 
+                                     + (particles[a].y - particles[b].y) * (particles[a].y - particles[b].y));
+                    
+                    if (distance < (canvas.width/7) * (canvas.height/7)) {
+                        const opacityValue = 1 - (distance / 20000); 
+                        ctx.strokeStyle = `hsla(${canvasHue}, 100%, 50%, ${opacityValue})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateCanvas() {
+            requestAnimationFrame(animateCanvas);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (isReducedMotion) return;
+
+            canvasHue = (canvasHue + hueIncrement) % 360; 
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+            }
+            connect();
+        }
+        
+        if (!isReducedMotion) {
+            setupCanvas();
+            animateCanvas();
+        }
+
+        // 2. Typewriter Effect
+        const typewriterText = '> Accessing profile...\n> Welcome, I’m Satyaki Das_';
+        const typewriterElement = document.getElementById('typewriter');
+        let i = 0;
+        
+        function typeWriter() {
+            if (i < typewriterText.length) {
+                typewriterElement.textContent += typewriterText.charAt(i);
+                i++;
+                const speed = typewriterText.charAt(i-1) === '\n' ? 800 : (typewriterText.charAt(i-1) === ' ' ? 70 : 50);
+                setTimeout(typeWriter, speed);
+            } else {
+                typewriterElement.style.borderRight = 'none';
+                typewriterElement.style.animation = 'none';
+            }
+        }
+
+        // 3. Smooth Scrolling
+        document.querySelectorAll('a[href^="#"], .certification-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId.startsWith('#') && targetId.length > 1) { 
+                    e.preventDefault();
+                    document.querySelector(targetId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 4. Header Scroll Shadow
+        const header = document.getElementById('nav-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // 5. Intersection Observer
+        if (!isReducedMotion) {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.target.id === 'hero') return;
+
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+            
+            const timelineObserverOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5 
+            };
+            const timelineObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                }
+            );
+            }, timelineObserverOptions);
+
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                timelineObserver.observe(item);
+            });
+        }
+        
+        window.onload = function() {
+            typeWriter();
+            if (isReducedMotion) {
+                document.querySelectorAll('.section').forEach(s => s.classList.add('visible'));
+                document.querySelectorAll('.timeline-item').forEach(i => i.classList.add('visible'));
+            }
+        };
+    </script>
+</body>
+</html>
