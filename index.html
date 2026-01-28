@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satyaki Das | CEH v13 Ai & Digital Forensics Specialist</title>
+    <meta name="description" content="Portfolio of Satyaki Das, a Certified Ethical Hacker (CEH v13 Ai) and Digital Forensics Specialist based in Kolkata. Expert in VAPT, Incident Response, and AI Security.">
+    <meta name="theme-color" content="#0a0a0a">
+
+    <!-- Preload critical fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Added FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ------------------------------------------------------------------
+        DESIGN SYSTEM 2026
+        ------------------------------------------------------------------
+        */
+        :root {
+            /* Palette */
+            --bg-color: #050505;
+            --surface-color: #0f0f10;
+            --surface-hover: #1a1a1c;
+            
+            /* Text */
+            --text-primary: #e0e0e0;
+            --text-secondary: #858585;
+            --text-accent: #f0f0f0;
+
+            /* Accents */
+            --accent-primary: #3b82f6; /* Electric Blue */
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --accent-secondary: #bef264; /* Acid Lime */
+            --accent-alert: #ef4444; /* Cyber Red for Badges */
+
+            /* Core */
+            --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --container-width: 1400px;
+            --section-gap: clamp(4rem, 10vw, 8rem);
+            --border-radius: 4px;
+            
+            /* Motion */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-base: 0.3s var(--ease-out-expo);
+        }
+
+        /* Reset & Base */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 100%;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            width: 90%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Background FX */
+        @keyframes drift {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+
+        @keyframes rotate-slow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            animation: drift 20s linear infinite;
+        }
+
+        .scanline-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1;
+            background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.03), transparent);
+            animation: scanline 8s linear infinite;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            color: var(--text-accent);
+        }
+
+        /* Updated font-size for h1 to be smaller */
+        h1 { 
+            font-size: clamp(2rem, 6vw, 4.5rem); 
+            margin-bottom: 1rem; 
+        }
+        
+        h2 { font-size: clamp(1.8rem, 5vw, 3.5rem); margin-bottom: 2rem; }
+        
+        .mono {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        a { color: inherit; text-decoration: none; transition: var(--transition-base); }
+
+        /* Navigation */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 1rem 0;
+            z-index: 1000;
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.3s ease;
+        }
+        .navbar.hidden { transform: translateY(-100%); }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-weight: 800; font-size: 1.25rem; letter-spacing: -0.02em; z-index: 1002; }
+        .nav-logo span { color: var(--accent-primary); }
+        
+        .nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; }
+        .nav-link { font-size: 0.9rem; color: var(--text-secondary); position: relative; }
+        
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 1002;
+            padding: 10px;
+        }
+        .menu-toggle span {
+            width: 25px;
+            height: 2px;
+            background-color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        /* Hover Effects for Desktop Only */
+        @media (hover: hover) {
+            .nav-link:hover, .nav-link.active { color: var(--text-primary); }
+            .nav-link::after {
+                content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 1px;
+                background-color: var(--accent-primary); transition: width 0.3s var(--ease-out-expo);
+            }
+            .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        }
+
+        /* UI Elements */
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem;
+            background: var(--text-primary); color: var(--bg-color); font-weight: 600;
+            border-radius: var(--border-radius); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        .btn-outline { background: transparent; color: var(--text-primary); border: 1px solid rgba(255,255,255,0.2); }
+        .magnetic { display: inline-block; }
+
+        @media (hover: hover) {
+            .btn:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+            .btn-outline:hover { border-color: var(--text-primary); background: rgba(255,255,255,0.05); }
+        }
+
+        /* ----------------------------------------------------
+        HERO SECTION & PROFILE IMAGE STYLES
+        ----------------------------------------------------
+        */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 5rem;
+            position: relative;
+        }
+
+        .hero-layout {
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr; /* Text heavy left, image right */
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero h1 span {
+            display: block;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.2rem); color: var(--text-secondary);
+            margin-bottom: 2.5rem; max-width: 600px; line-height: 1.7;
+        }
+
+        /* Profile Image Wrapper */
+        .hero-image-container {
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+            aspect-ratio: 1/1.1; 
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--surface-hover);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 2;
+        }
+
+        /* Rotating Tech Ring Effect */
+        .hero-image-container::before {
+            content: '';
+            position: absolute;
+            width: 110%;
+            height: 100%;
+            border: 1px dashed rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            z-index: 1;
+            animation: rotate-slow 30s linear infinite;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.5s ease, transform 0.5s ease;
+        }
+
+        /* Glitch/Overlay line on image */
+        .hero-image-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(59, 130, 246, 0.1) 0%, transparent 50%, rgba(59, 130, 246, 0.1) 100%);
+            pointer-events: none;
+            opacity: 0.5;
+            mix-blend-mode: overlay;
+        }
+
+        /* Stats in Hero */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+            margin-top: 3rem; padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .stat-item h3 { font-size: 2rem; color: var(--text-primary); margin-bottom: 0.25rem; }
+        .stat-item p { color: var(--text-secondary); font-size: 0.85rem; }
+
+        /* ------------------------------------------------------------------
+        RIBBON (MARQUEE) STYLES
+        ------------------------------------------------------------------
+        */
+        .ribbon-container {
+            width: 100%;
+            overflow: hidden;
+            background: var(--surface-color);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 1.25rem 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .ribbon-track {
+            display: flex;
+            gap: 3rem;
+            width: max-content;
+            animation: marquee 30s linear infinite;
+        }
+
+        .ribbon-item {
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .ribbon-item::after {
+            content: '•';
+            margin-left: 3rem;
+            color: rgba(255,255,255,0.1);
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } 
+        }
+
+        /* ------------------------------------------------------------------
+        CERTIFICATE GALLERY (CAROUSEL)
+        ------------------------------------------------------------------
+        */
+        .cert-carousel {
+            margin-top: 3rem;
+            width: 100%;
+            overflow: hidden;
+            padding: 2rem 0;
+            background: rgba(255,255,255,0.01);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+        }
+
+        .cert-carousel-track {
+            display: flex;
+            gap: 1.5rem;
+            width: max-content;
+            animation: scroll-cert 45s linear infinite;
+            padding: 0 1rem;
+        }
+
+        .cert-gallery-img {
+            height: 180px; /* Slightly smaller on mobile default */
+            width: auto;
+            aspect-ratio: 3/2;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: zoom-in;
+            opacity: 0.8;
+            filter: grayscale(100%);
+        }
+
+        @media (hover: hover) {
+            .cert-gallery-img:hover {
+                opacity: 1; filter: grayscale(0%); transform: scale(1.05);
+                border-color: var(--accent-primary); box-shadow: 0 0 20px var(--accent-glow);
+                z-index: 2;
+            }
+            /* Pause on hover only for mouse users */
+            .cert-carousel:hover .cert-carousel-track,
+            .ribbon-container:hover .ribbon-track {
+                animation-play-state: paused;
+            }
+        }
+
+        @keyframes scroll-cert {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show { opacity: 1; }
+
+        .modal-content-wrapper {
+            animation: zoomIn 0.3s ease;
+            max-width: 95%;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 100%;
+            max-height: 80vh;
+            border: 1px solid var(--accent-primary);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+        }
+
+        .modal-caption {
+            margin-top: 1rem;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            color: #f1f1f1;
+            font-size: 35px;
+            font-weight: 300;
+            transition: 0.3s;
+            cursor: pointer;
+            z-index: 2001;
+            padding: 10px; /* Touch target */
+        }
+
+        @keyframes zoomIn {
+            from {transform:scale(0.9); opacity: 0;}
+            to {transform:scale(1); opacity: 1;}
+        }
+
+
+        /* General Sections */
+        .skill-category { margin-bottom: 3rem; }
+        .skill-category h3 { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--accent-primary); }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+        .skill-tag {
+            padding: 0.6rem 1rem; background: var(--surface-color);
+            border: 1px solid rgba(255,255,255,0.05); color: var(--text-secondary);
+            border-radius: 4px; transition: var(--transition-base); cursor: default;
+            font-size: 0.9rem;
+        }
+
+        /* Use auto-fit with smaller minmax for mobile friendly grids */
+        .cert-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 1.5rem; margin-top: 2rem; 
+        }
+        
+        .cert-card {
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem; border-radius: var(--border-radius); transition: var(--transition-base);
+            display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;
+        }
+        .cert-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 100%;
+            background: var(--accent-primary); transform: scaleY(0); transform-origin: bottom; transition: transform 0.3s var(--ease-out-expo);
+        }
+
+        .cert-issuer { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-secondary); margin-bottom: 0.5rem; font-family: var(--font-mono); }
+        .cert-card h4 { font-size: 1.1rem; color: var(--text-primary); margin-bottom: 1rem; line-height: 1.3; }
+        .cert-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem; }
+        
+        /* Education Section Styles */
+        .edu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .edu-card {
+            background: var(--surface-color);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline { position: relative; margin-top: 3rem; border-left: 1px solid rgba(255,255,255,0.1); }
+        .timeline-item { padding-left: 2rem; position: relative; margin-bottom: 3rem; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -5px; top: 0; width: 9px; height: 9px;
+            background: var(--accent-primary); border-radius: 50%; box-shadow: 0 0 10px var(--accent-primary);
+        }
+        .timeline-role { font-size: 1.3rem; color: var(--text-primary); margin-bottom: 0.25rem; }
+
+        /* --- PROJECTS SECTION STYLES --- */
+        #projects {
+            padding: var(--section-gap) 1rem;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            width: 90%;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Secondary Button Style */
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--accent-primary);
+            color: var(--accent-primary);
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* BADGES SECTION STYLES */
+        .badges-wrapper { margin-top: 3rem; }
+        .badge-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: flex-start;
+        }
+        .badge-item {
+            position: relative;
+            width: 120px; /* Smaller for mobile fit */
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: default;
+        }
+        .badge-hex {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            border: 1px solid transparent; z-index: 1;
+        }
+        .badge-border {
+            position: absolute; top: -1px; left: -1px; right: -1px; bottom: -1px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: 0;
+        }
+
+        .badge-content { z-index: 2; padding: 0.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+        .badge-name { font-size: 0.7rem; font-weight: 700; line-height: 1.1; color: var(--text-primary); }
+        .badge-platform { font-size: 0.6rem; font-family: var(--font-mono); color: var(--text-secondary); text-transform: uppercase; }
+        .badge-img { width: 35px; height: 35px; object-fit: contain; margin-bottom: 0.25rem; filter: drop-shadow(0 0 5px var(--accent-primary)); }
+
+        .contact-section { padding: var(--section-gap) 0; text-align: center; }
+        .contact-large-text { font-size: clamp(1.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.2; margin: 2rem 0; word-break: break-all; }
+        
+        footer { padding: 3rem 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 4rem; background: var(--bg-color); }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem; }
+        
+        .reveal-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* Responsive Mobile Layout Adjustments */
+        @media (max-width: 900px) {
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: absolute;
+                top: 60px; /* Adjusted height */
+                left: 0;
+                width: 100%;
+                background: var(--bg-color); /* Solid background */
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+                padding: 2rem 0;
+                transform: translateY(-150%);
+                transition: transform 0.3s ease;
+                z-index: 1001;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            }
+            .nav-links.active { transform: translateY(0); }
+            
+            .hero-layout {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                text-align: center;
+            }
+            .hero-image-container { order: 2; margin-top: 1rem; }
+            .hero-text { order: 1; }
+            .hero h1 { font-size: 2.8rem; }
+            .stats-grid { justify-content: center; grid-template-columns: 1fr 1fr; }
+            .stats-grid .stat-item:last-child { grid-column: span 2; }
+            
+            :root { --section-gap: 4rem; }
+            .hero-image-wrapper { max-width: 280px; }
+            .badge-grid { justify-content: center; }
+            
+            /* Responsive Grid Tweaks for Mobile */
+            .grid-container { grid-template-columns: 1fr; } /* Stack projects */
+            .edu-grid { grid-template-columns: 1fr; }
+            .cert-grid { grid-template-columns: 1fr; }
+            
+            .timeline { padding-left: 1rem; }
+            .timeline-item { padding-left: 1.5rem; }
+            
+            /* Hide the desktop talk button */
+            .desktop-cta { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2.2rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .stats-grid .stat-item:last-child { grid-column: span 1; }
+            .badge-item { width: 100px; height: 120px; }
+            .contact-large-text { font-size: 1.2rem; }
+            .footer-content { flex-direction: column; text-align: center; }
+            .footer-text { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animated backgrounds -->
+    <div class="grid-overlay"></div>
+    <div class="scanline-overlay"></div>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-content">
+            <a href="#" class="nav-logo">Satyaki<span>.Security</span></a>
+            
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Capabilities</a></li>
+                <li><a href="#certifications" class="nav-link">Credentials</a></li>
+                <li><a href="#education" class="nav-link">Education</a></li>
+                <li><a href="#experience" class="nav-link">Timeline</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <!-- Mobile Only CTA -->
+                <li><a href="#contact" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem; display: inline-flex; margin-top: 1rem;">Let's Talk</a></li>
+            </ul>
+            <!-- Desktop Only CTA -->
+            <a href="#contact" class="btn btn-outline desktop-cta" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Let's Talk</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Modified Hero Section with Profile Image -->
+        <section class="hero" id="home">
+            <div class="container hero-layout reveal-on-scroll">
+                
+                <!-- Text Column -->
+                <div class="hero-text">
+                    <h1>
+                        <span>Digital Forensics.</span>
+                        <span style="color: var(--text-secondary);">Cyber Security.</span>
+                        <span>Resilience.</span>
+                    </h1>
+                    <p>
+                        I am Satyaki Das. Certified Ethical Hacker (CEH v13 Ai) | Digital Forensics Specialist | Cybersecurity Analyst. I bridge the gap between digital evidence and secure architecture.
+                    </p>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; justify-content: center; @media(min-width: 900px){justify-content: flex-start;}">
+                        <a href="#projects" class="btn magnetic">View Case Studies</a>
+                        <a href="https://drive.google.com/file/d/1YjUsMNc0EVwdUZVDczgPW9TMRICZLcj2/view?usp=drive_link" target="_blank" class="btn btn-outline magnetic">Download CV</a>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <h3>45+</h3>
+                            <p>Forensic Investigations</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>800GB+</h3>
+                            <p>Evidence Analyzed</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>100+</h3>
+                            <p>Systems Audited</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Image Column -->
+                <div class="hero-image-container">
+                    <div class="hero-image-wrapper magnetic">
+                        <!-- Placeholder Image - Replace src with actual photo URL -->
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/DSC_1181.JPG" alt="Satyaki Das Profile" class="profile-img">
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- HORIZONTAL RIBBON (MARQUEE) -->
+        <div class="ribbon-container">
+            <div class="ribbon-track">
+                <!-- Content Set 1 -->
+                <a href="#skills" class="ribbon-item">Kali Linux</a>
+                <a href="#skills" class="ribbon-item">Metasploit</a>
+                <a href="#skills" class="ribbon-item">Burp Suite Pro</a>
+                <a href="#skills" class="ribbon-item">Wireshark</a>
+                <a href="#skills" class="ribbon-item">FTK Imager</a>
+                <a href="#skills" class="ribbon-item">X-Ways Forensics</a>
+                <a href="#skills" class="ribbon-item">Autopsy</a>
+                <a href="#skills" class="ribbon-item">Volatility</a>
+                <a href="#skills" class="ribbon-item">EnCase</a>
+                <a href="#skills" class="ribbon-item">Magnet AXIOM</a>
+                <a href="#skills" class="ribbon-item">Red Team</a>
+                <a href="#skills" class="ribbon-item">Blue Team</a>
+                <a href="#skills" class="ribbon-item">SOC Operations</a>
+                <a href="#skills" class="ribbon-item">ISO 27001</a>
+                
+                <!-- Content Set 2 (Duplicate for Seamless Loop) -->
+                <a href="#skills" class="ribbon-item">Kali Linux</a>
+                <a href="#skills" class="ribbon-item">Metasploit</a>
+                <a href="#skills" class="ribbon-item">Burp Suite Pro</a>
+                <a href="#skills" class="ribbon-item">Wireshark</a>
+                <a href="#skills" class="ribbon-item">FTK Imager</a>
+                <a href="#skills" class="ribbon-item">X-Ways Forensics</a>
+                <a href="#skills" class="ribbon-item">Autopsy</a>
+                <a href="#skills" class="ribbon-item">Volatility</a>
+                <a href="#skills" class="ribbon-item">EnCase</a>
+                <a href="#skills" class="ribbon-item">Magnet AXIOM</a>
+                <a href="#skills" class="ribbon-item">Red Team</a>
+                <a href="#skills" class="ribbon-item">Blue Team</a>
+                <a href="#skills" class="ribbon-item">SOC Operations</a>
+                <a href="#skills" class="ribbon-item">ISO 27001</a>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <section id="about" class="container" style="padding: var(--section-gap) 1rem;">
+            <div class="reveal-on-scroll">
+                <p class="mono">01 / The Narrative</p>
+                <h2>Beyond the Logs</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem;" class="about-grid">
+                    <div>
+                        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                            Certified Ethical Hacker (CEH v13 AI) and Digital Forensics graduate with hands-on experience in VAPT, WAPT, incident response, and security compliance auditing.
+                        </p>
+                        <p style="color: var(--text-secondary);">
+                           Proven expertise in identifying critical vulnerabilities, conducting forensic examinations, and implementing ISO 27001 and NIST frameworks. Skilled in leveraging advanced forensic tools and penetration testing methodologies to strengthen security posture and support legal investigations.
+                        </p>
+                    </div>
+                    <div>
+                        <ul style="list-style: none; border-left: 2px solid var(--accent-primary); padding-left: 1.5rem;">
+                            <li style="margin-bottom: 1rem;"><strong>Focus:</strong> Cyber security, Digital Forensics & Incident Response (DFIR)</li>
+                            <li style="margin-bottom: 1rem;"><strong>Approach:</strong> Human-centric & Compliance-driven (ISO 27001)</li>
+                            <li><strong>Next Gen:</strong> Securing LLMs & AI Infrastructure</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills-section">
+            <div class="container reveal-on-scroll">
+                <p class="mono">02 / Technical Arsenal</p>
+                <h2>Core Capabilities</h2>
+
+                <div class="skill-category">
+                    <h3>Digital Forensics</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">FTK Imager</span>
+                        <span class="skill-tag">X-Ways Forensics</span>
+                        <span class="skill-tag">Autopsy</span>
+                        <span class="skill-tag">EnCase</span>
+                        <span class="skill-tag">Magnet AXIOM</span>
+                        <span class="skill-tag">Volatility (Memory)</span>
+                        <span class="skill-tag">Cellebrite UFED</span>
+                        <span class="skill-tag">Sleuth Kit</span>
+                        <span class="skill-tag">OSForensics</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Offensive & Defensive Security</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">VAPT / WAPT</span>
+                        <span class="skill-tag">Burp Suite Pro</span>
+                        <span class="skill-tag">Metasploit</span>
+                        <span class="skill-tag">Wireshark</span>
+                        <span class="skill-tag">Nessus</span>
+                        <span class="skill-tag">Threat Hunting</span>
+                        <span class="skill-tag">Malware Analysis</span>
+                        <span class="skill-tag">Red/Blue/Purple Team</span>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Governance & AI</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">ISO 27001:2022</span>
+                        <span class="skill-tag">NIST CSF</span>
+                        <span class="skill-tag">OWASP Top 10 LLM</span>
+                        <span class="skill-tag">AI Risk Management</span>
+                        <span class="skill-tag">Python Scripting</span>
+                        <span class="skill-tag">MITRE ATT&CK</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications" class="container" style="padding: var(--section-gap) 1rem;">
+            <div class="reveal-on-scroll">
+                <p class="mono">03 / Validated Skills</p>
+                <h2>Credentials & Certifications</h2>
+                
+                <div class="cert-grid">
+                    <div class="cert-card">
+                        <span class="cert-issuer">EC-Council</span>
+                        <h4>Certified Ethical Hacker (CEH v13 Ai)</h4>
+                        <div class="cert-footer">
+                            <span class="cert-year">2026</span>
+                            <span style="font-size: 1.2rem; color: var(--accent-secondary);">✓</span>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <span class="cert-issuer">EC-Council</span>
+                        <h4>Certified Network Defender (CND)</h4>
+                        <div class="cert-footer">
+                            <span class="cert-year">Issued</span>
+                            <span style="font-size: 1.2rem; color: var(--accent-secondary);">✓</span>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <span class="cert-issuer">FCCIS India</span>
+                        <h4>Mobile Forensics Specialist</h4>
+                        <div class="cert-footer">
+                            <span class="cert-year">Feb 2025</span>
+                            <span style="font-size: 1.2rem; color: var(--accent-secondary);">✓</span>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <span class="cert-issuer">Udemy</span>
+                        <h4>ISO/IEC 27001:2022 ISMS Lead Auditor</h4>
+                        <div class="cert-footer">
+                            <span class="cert-year">Oct 2025</span>
+                            <span style="font-size: 1.2rem; color: var(--accent-secondary);">✓</span>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <span class="cert-issuer">Udemy</span>
+                        <h4>Master LLM Security & Responsible AI</h4>
+                        <div class="cert-footer">
+                            <span class="cert-year">Oct 2025</span>
+                            <span style="font-size: 1.2rem; color: var(--accent-secondary);">✓</span>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <span class="cert-issuer">ISOAH</span>
+                        <h4>CCNA Essentials</h4>
+                        <div class="cert-footer">
+                            <span class="cert-year">Aug 2024</span>
+                            <span style="font-size: 1.2rem; color: var(--accent-secondary);">✓</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEW: Horizontal Scrolling Certificate Carousel -->
+                <div class="cert-carousel" title="Click to view certificate">
+                    <div class="cert-carousel-track">
+                        <!-- New Certificate: ECC-CEH (1st Position) -->
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/ECC-CEH-Certificate.png" class="cert-gallery-img" onclick="openModal(this.src, 'Certified Ethical Hacker v13 Ai')">
+
+                        <!-- New Certificate: I2CSUpdate20251030 (2nd Position) -->
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/I2CSUpdate20251030-32-7afnmi.png" class="cert-gallery-img" onclick="openModal(this.src, 'Introduction to Cybersecurity')">
+
+                        <!-- New Certificate: SATYAKI DAS-CCNA (3nd Position) -->
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/SATYAKI%20DAS-CCNA.png" class="cert-gallery-img" onclick="openModal(this.src, 'CCNA Essentials')">
+
+                        <!-- New Certificate: AddText (4th Position) -->
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/913ef212cdfc44575fabe98f64cbf8117a465944/AddText_02-10-12.26.31.png" class="cert-gallery-img" onclick="openModal(this.src, 'FCCIS-INDIA MOBILE FORENSIC CERTIFICATE')">
+
+                        <!-- New Certificate: EC-COUNCIL INTRODUCTION TO DARK WEB (5th Position) -->
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/2bbe8098-6962-47a2-a869-acc3ecb01a9c.png" class="cert-gallery-img" onclick="openModal(this.src, 'EC-COUNCIL INTRODUCTION TO DARK WEB')">
+
+                        <!-- New Certificate: EC-COUNCIL CLOUD COMPUTING (6th Position) -->
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/d095a374-e75c-4e0d-8995-55699a9074c3.png" class="cert-gallery-img" onclick="openModal(this.src, 'EC-COUNCIL CLOUD COMPUTING')">
+
+                        <!-- New Certificate: DELOITTE CYBERSECURITY SIMULATION (7th Position) -->
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/deloitteE9pA6qsdbeyEkp3ti_9PBTqmSxAf6zZTseP_69035941e4ba1525b638269c_1761833041288_completion_certificate-0001.png" class="cert-gallery-img" onclick="openModal(this.src, 'DELOITTE CYBERSECURITY SIMULATION')">
+
+                        <!-- New Certificate: TATA CYBERSECURITY ANALYST JOB SIMULATION (8th Position) -->
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/TATA%20gmf3ypEXBj2wvfQWC_ifobHAoMjQs9s6bKS_69035941e4ba1525b638269c_1761839794447_completion_certificate.png" class="cert-gallery-img" onclick="openModal(this.src, 'TATA CYBERSECURITY ANALYST JOB SIMULATION')">
+
+                         <!-- New Certificate: ISO/IEC 27001:2022 ISMS (9th Position) -->
+                         <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/UC-4aa52e25-02c0-4a41-81f9-e24341d5fd71.jpg" class="cert-gallery-img" onclick="openModal(this.src, 'ISO/IEC 27001:2022 ISMS')">
+                        
+                         <!-- New Certificate: AI/LLM SECURITY (10th Position) -->
+                         <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/UC-65c16108-d31f-4189-9e87-ffa4f82bae16.jpg" class="cert-gallery-img" onclick="openModal(this.src, 'AI/LLM SECURITY')">
+                        
+                        <!-- Set 2 (Duplicated for seamless loop) -->
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/ECC-CEH-Certificate.png" class="cert-gallery-img" onclick="openModal(this.src, 'Certified Ethical Hacker v13 Ai')">
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/I2CSUpdate20251030-32-7afnmi.png" class="cert-gallery-img" onclick="openModal(this.src, 'Introduction to Cybersecurity')">
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/SATYAKI%20DAS-CCNA.png" class="cert-gallery-img" onclick="openModal(this.src, 'CCNA Essentials')">
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/913ef212cdfc44575fabe98f64cbf8117a465944/AddText_02-10-12.26.31.png" class="cert-gallery-img" onclick="openModal(this.src, 'FCCIS-INDIA MOBILE FORENSIC CERTIFICATE')">
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/2bbe8098-6962-47a2-a869-acc3ecb01a9c.png" class="cert-gallery-img" onclick="openModal(this.src, 'EC-COUNCIL INTRODUCTION TO DARK WEB')">
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/d095a374-e75c-4e0d-8995-55699a9074c3.png" class="cert-gallery-img" onclick="openModal(this.src, 'EC-COUNCIL CLOUD COMPUTING')">
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/deloitteE9pA6qsdbeyEkp3ti_9PBTqmSxAf6zZTseP_69035941e4ba1525b638269c_1761833041288_completion_certificate-0001.png" class="cert-gallery-img" onclick="openModal(this.src, 'DELOITTE CYBERSECURITY SIMULATION')">
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/TATA%20gmf3ypEXBj2wvfQWC_ifobHAoMjQs9s6bKS_69035941e4ba1525b638269c_1761839794447_completion_certificate.png" class="cert-gallery-img" onclick="openModal(this.src, 'TATA CYBERSECURITY ANALYST JOB SIMULATION')">
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/UC-4aa52e25-02c0-4a41-81f9-e24341d5fd71.jpg" class="cert-gallery-img" onclick="openModal(this.src, 'ISO/IEC 27001:2022 ISMS')">
+                        <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/UC-65c16108-d31f-4189-9e87-ffa4f82bae16.jpg" class="cert-gallery-img" onclick="openModal(this.src, 'AI/LLM SECURITY')">
+                        
+                        
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- NEW: EDUCATION SECTION -->
+        <section id="education" class="container" style="padding: var(--section-gap) 1rem;">
+             <div class="reveal-on-scroll">
+                <p class="mono">03.5 / Foundations</p>
+                <h2>Academic Background</h2>
+                
+                <div class="edu-grid">
+                    <div class="edu-card">
+                        <h3 class="edu-degree">B.Sc. in Digital Forensics</h3>
+                        <span class="edu-school">Maulana Abul Kalam Azad University of Technology (MAKAUT)</span>
+                        <div class="edu-meta">
+                            <span>2022 - 2025</span>
+                            <span>SGPA: 8.38</span>
+                        </div>
+                    </div>
+                    
+                    <div class="edu-card">
+                        <h3 class="edu-degree">Diploma in Computer Science & Engineering</h3>
+                        <span class="edu-school">Brainware University</span>
+                        <div class="edu-meta">
+                            <span>2019 - 2021</span>
+                            <span>CGPA: 8.5</span>
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+        <!-- BADGES SECTION -->
+        <section id="badges" class="container" style="padding: 2rem 1rem;">
+            <div class="reveal-on-scroll">
+                <p class="mono">04 / Operations</p>
+                <h3 style="font-size: 1.75rem; color: var(--text-primary); margin-bottom: 2rem;">Achievements & CTF Badges</h3>
+                
+                <div class="badge-grid">
+                    <!-- New Badge: CEH Badge -->
+                    <div class="badge-item" title="Certified Ethical Hacker Badge">
+                        <div class="badge-border"></div>
+                        <div class="badge-hex"></div>
+                        <div class="badge-content">
+                            <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/CEH_2E345519D3F7.png" alt="CEH Badge" class="badge-img" style="width: 60px; height: 60px;">
+                            <span class="badge-name">CEH v13</span>
+                            <span class="badge-platform">Certified</span>
+                        </div>
+                    </div>
+
+                    <!-- New Badge: Intro to Cybersecurity (2nd Position) -->
+                    <div class="badge-item" title="Introduction to Cybersecurity">
+                        <div class="badge-border"></div>
+                        <div class="badge-hex"></div>
+                        <div class="badge-content">
+                            <img src="https://raw.githubusercontent.com/9un15h3r/satyaki-das.com/refs/heads/master/introduction-to-cybersecurity%20(1).png" alt="Intro to Cyber Badge" class="badge-img" style="width: 60px; height: 60px;">
+                            <span class="badge-name">Intro to Cyber</span>
+                            <span class="badge-platform">Cisco</span>
+                        </div>
+                    </div>
+
+                    <!-- Badge 1: Mr. Robot -->
+                    <div class="badge-item" title="Capture The Flag Achievement">
+                        <div class="badge-border"></div>
+                        <div class="badge-hex"></div>
+                        <div class="badge-content">
+                            <img src="https://assets.tryhackme.com/img/badges/mrrobot.png" alt="Mr Robot Badge" class="badge-img" style="width: 60px; height: 60px;">
+                            <span class="badge-name">Mr. Robot</span>
+                            <span class="badge-platform">TryHackMe</span>
+                        </div>
+                    </div>
+
+                    <!-- Badge 2: OWASP Top 10 -->
+                    <div class="badge-item" title="Web Security Achievement">
+                        <div class="badge-border"></div>
+                        <div class="badge-hex"></div>
+                        <div class="badge-content">
+                            <img src="https://assets.tryhackme.com/img/badges/owasptop10.png" alt="OWASP Top 10 Badge" class="badge-img" style="width: 60px; height: 60px;">
+                            <span class="badge-name">OWASP Top 10</span>
+                            <span class="badge-platform">TryHackMe</span>
+                        </div>
+                    </div>
+
+                    <!-- Badge 3: Linux PrivEsc -->
+                    <div class="badge-item" title="Linux Escalation Achievement">
+                        <div class="badge-border"></div>
+                        <div class="badge-hex"></div>
+                        <div class="badge-content">
+                            <img src="https://assets.tryhackme.com/img/badges/linuxprivesc.png" alt="Linux PrivEsc Badge" class="badge-img" style="width: 60px; height: 60px;">
+                            <span class="badge-name">Linux PrivEsc</span>
+                            <span class="badge-platform">TryHackMe</span>
+                        </div>
+                    </div>
+
+                    <!-- Badge 4: Hash Cracker -->
+                    <div class="badge-item" title="Cryptography Achievement">
+                        <div class="badge-border"></div>
+                        <div class="badge-hex"></div>
+                        <div class="badge-content">
+                            <img src="https://assets.tryhackme.com/img/badges/hashcracker.png" alt="Hash Cracker Badge" class="badge-img" style="width: 60px; height: 60px;">
+                            <span class="badge-name">Hash Cracker</span>
+                            <span class="badge-platform">TryHackMe</span>
+                        </div>
+                    </div>
+
+                    <!-- Badge 5: Webbed -->
+                    <div class="badge-item" title="Web Exploitation Achievement">
+                        <div class="badge-border"></div>
+                        <div class="badge-hex"></div>
+                        <div class="badge-content">
+                            <img src="https://assets.tryhackme.com/img/badges/webbed.png" alt="Webbed Badge" class="badge-img" style="width: 60px; height: 60px;">
+                            <span class="badge-name">Webbed</span>
+                            <span class="badge-platform">TryHackMe</span>
+                        </div>
+                    </div>
+
+                    <!-- Badge 6: Ice -->
+                    <div class="badge-item" title="Windows Security Achievement">
+                        <div class="badge-border"></div>
+                        <div class="badge-hex"></div>
+                        <div class="badge-content">
+                            <img src="https://assets.tryhackme.com/img/badges/ice.png" alt="Ice Badge" class="badge-img" style="width: 60px; height: 60px;">
+                            <span class="badge-name">Ice</span>
+                            <span class="badge-platform">TryHackMe</span>
+                        </div>
+                    </div>
+                     <!-- Badge 7: Blue -->
+                     <div class="badge-item" title="EternalBlue Exploit">
+                        <div class="badge-border"></div>
+                        <div class="badge-hex"></div>
+                        <div class="badge-content">
+                            <img src="https://assets.tryhackme.com/img/badges/blue.png" alt="Blue Badge" class="badge-img" style="width: 60px; height: 60px;">
+                            <span class="badge-name">Blue</span>
+                            <span class="badge-platform">TryHackMe</span>
+                        </div>
+                    </div>
+
+                    <!-- Badge 8: Linux (Added) -->
+                    <div class="badge-item" title="Linux Fundamentals">
+                        <div class="badge-border"></div>
+                        <div class="badge-hex"></div>
+                        <div class="badge-content">
+                            <img src="https://assets.tryhackme.com/img/badges/linux.png" alt="Linux Badge" class="badge-img" style="width: 60px; height: 60px;">
+                            <span class="badge-name">Linux</span>
+                            <span class="badge-platform">TryHackMe</span>
+                        </div>
+                    </div>
+
+                    <!-- Badge 9: OhSINT (Added) -->
+                    <div class="badge-item" title="Open Source Intelligence">
+                        <div class="badge-border"></div>
+                        <div class="badge-hex"></div>
+                        <div class="badge-content">
+                            <img src="https://assets.tryhackme.com/img/badges/ohsint.png" alt="OhSINT Badge" class="badge-img" style="width: 60px; height: 60px;">
+                            <span class="badge-name">OhSINT</span>
+                            <span class="badge-platform">TryHackMe</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="experience-section">
+            <div class="container reveal-on-scroll">
+                <p class="mono">05 / The Journey</p>
+                <h2>Professional Timeline</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span class="timeline-date">Jan 2025 - Mar 2025</span>
+                        <h3 class="timeline-role">Digital Forensic Evidence Examiner</h3>
+                        <p class="timeline-company">Nightingale Data Solution | Kolkata</p>
+                        <p class="timeline-desc">
+                            Executed high-stakes forensic examinations on 25+ devices. Extracted and analyzed 500GB+ of critical artifacts for defense litigation.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-date">Oct 2024 - Nov 2024</span>
+                        <h3 class="timeline-role">Digital Forensic Intern</h3>
+                        <p class="timeline-company">ISOAH Forensics HQ</p>
+                        <p class="timeline-desc">
+                            Recovered 300GB+ data from 150+ file systems. Maintained evidentiary integrity for 75+ items. specialized in damaged partition recovery.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-date">Aug 2024 - Sep 2024</span>
+                        <h3 class="timeline-role">InfoSec Compliance Auditor</h3>
+                        <p class="timeline-company">ISOAH (CERT-In Empaneled)</p>
+                        <p class="timeline-desc">
+                            Spearheaded ISO 27001 audits on 100+ systems. Achieved 40% improvement in compliance posture.
+                        </p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-date">Jun 2024 - Jul 2024</span>
+                        <h3 class="timeline-role">VAPT Intern</h3>
+                        <p class="timeline-company">Navodita Infosystems | Remote</p>
+                        <p class="timeline-desc">
+                            Orchestrated penetration testing on 15+ targets. Discovered 50+ vulnerabilities including 10 critical CVEs.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section visible">
+            <div class="reveal-on-scroll">
+                <h2>Projects <i class="fas fa-code-branch"></i></h2>
+                <!-- Changed layout to grid-container to accommodate multiple projects -->
+                <div class="grid-container">
+                    <!-- Project 1: S.H.O.N.K.U. (New) -->
+                    <div class="project-card glass-card">
+                        <h4>S.H.O.N.K.U. - Cybersecurity &amp; Digital Forensics AI Assistant</h4>
+                        <p>AI-powered chatbot specialized in cybersecurity and digital forensics education with multi-model support.</p>
+                        <small>Nov 12, 2025</small>
+                        <ul style="margin-top: 1rem; padding-left: 1.2rem; list-style-type: circle; text-align: left; font-size: 0.95rem;">
+                            <li>Developed multi-model AI assistant (DeepSeek R1T2 Chimera) for guided learning on encryption, threat modeling, and forensic techniques.</li>
+                            <li>Implemented conversation history, session persistence, multi-format export (JSON, Markdown), and voice input.</li>
+                            <li>Built responsive dark-themed UI optimized for technical demonstrations and educational scenarios.</li>
+                        </ul>
+                        <div style="margin-top: 1.5rem;">
+                            <a href="https://9un15h3r.github.io/SHONKU/" target="_blank" class="btn btn-secondary" style="font-size: 0.9rem; padding: 0.5rem 1.5rem;">
+                                <i class="fas fa-external-link-alt"></i> View Project
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: Securing Intelligence -->
+                    <div class="project-card glass-card">
+                        <h4>Securing Intelligence: AI/ML Security Vulnerabilities and Mitigation Frameworks</h4>
+                        <p>Final-year B.Sc. project exploring AI/ML vulnerabilities, threats, and defense mechanisms.</p>
+                        <small>Feb 2025 - Oct 2025</small>
+                          <ul style="margin-top: 1rem; padding-left: 1.2rem; list-style-type: circle; text-align: left; font-size: 0.95rem;">
+                            <li>Analyzed threats: data poisoning, model backdoors, adversarial attacks, and LLM prompt injection.</li>
+                            <li>Architected enterprise-grade mitigation framework incorporating adversarial training and model hardening.</li>
+                            <li>Formulated GRC strategies for secure AI deployment aligned with OWASP Top 10 for LLM Applications.</li>
+                        </ul>
+                        <div style="margin-top: 1.5rem;">
+                            <a href="https://drive.google.com/file/d/1eb43bd7isn6_k0Ms6A4h1R5qpXSzep1l/view" target="_blank" class="btn btn-secondary" style="font-size: 0.9rem; padding: 0.5rem 1.5rem;">
+                                <i class="fas fa-external-link-alt"></i> View Project
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container reveal-on-scroll">
+                <p class="mono">07 / Connection</p>
+                <h2>Secure The Future</h2>
+                <a href="mailto:satyaki.sd.das@gmail.com" class="contact-large-text" style="display: block; margin-bottom: 1.5rem;">
+                    satyaki.sd.das@gmail.com
+                </a>
+                <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                    Kolkata based. Open to global remote roles.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 2rem;">
+                    <a href="https://linkedin.com/in/satyaki-cyberforensics" target="_blank" class="btn btn-outline">LinkedIn Profile</a>
+                    <a href="https://drive.google.com/file/d/1YjUsMNc0EVwdUZVDczgPW9TMRICZLcj2/view?usp=drive_link" target="_blank" class="btn btn-outline">Download Resume</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+             <div class="footer-left">
+                <img src="https://tryhackme-badges.s3.amazonaws.com/547y4k1.png" alt="TryHackMe Badge" style="height: 60px;">
+             </div>
+             <div class="footer-text">
+                <span class="mono">© 2026 Satyaki Das</span>
+                <span class="mono">Engineered with Vanilla HTML/CSS/JS</span>
+             </div>
+        </div>
+    </footer>
+
+    <!-- MODAL FOR IMAGE GALLERY -->
+    <div id="imageModal" class="modal" onclick="closeModal(event)">
+        <span class="modal-close" onclick="closeModal(event)">&times;</span>
+        <div class="modal-content-wrapper">
+            <img class="modal-content" id="modalImg">
+            <div id="modalCaption" class="modal-caption"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Scroll Reveal
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+            // Magnetic Buttons (Cursor aware)
+            const buttons = document.querySelectorAll('.magnetic');
+            buttons.forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = `translate(${x/8}px, ${y/8}px) scale(1.05)`;
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translate(0px, 0px) scale(1)';
+                });
+            });
+
+            // Navbar Hiding
+            let lastScroll = 0;
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                if (currentScroll <= 0) { navbar.classList.remove('hidden'); return; }
+                if (currentScroll > lastScroll && currentScroll > 100) { navbar.classList.add('hidden'); }
+                else { navbar.classList.remove('hidden'); }
+                lastScroll = currentScroll;
+            });
+
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+
+            if(menuToggle && navLinks) {
+                menuToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    
+                    // Simple animation for hamburger icon
+                    const spans = menuToggle.querySelectorAll('span');
+                    if(navLinks.classList.contains('active')) {
+                        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                        spans[1].style.opacity = '0';
+                        spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+                    } else {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
+                });
+
+                // Close menu when a link is clicked
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('active');
+                        // Reset hamburger icon
+                        const spans = menuToggle.querySelectorAll('span');
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    });
+                });
+            }
+        });
+
+        // Modal Logic
+        function openModal(src, caption) {
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImg");
+            const captionText = document.getElementById("modalCaption");
+            
+            modal.style.display = "block";
+            // Small timeout to allow display:block to apply before adding opacity class for transition
+            setTimeout(() => {
+                modal.classList.add("show");
+            }, 10);
+            
+            modalImg.src = src;
+            captionText.innerHTML = caption;
+            
+            // Prevent scrolling on body
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeModal(event) {
+            // Close if clicking overlay or close button, but not if clicking the image itself
+            if (event.target.id === "imageModal" || event.target.className === "modal-close") {
+                const modal = document.getElementById("imageModal");
+                modal.classList.remove("show");
+                setTimeout(() => {
+                    modal.style.display = "none";
+                }, 300); // Wait for transition
+                document.body.style.overflow = "auto";
+            }
+        }
+    </script>
+</body>
+</html>
